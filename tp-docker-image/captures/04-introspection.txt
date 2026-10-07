@@ -1,0 +1,107 @@
+$ docker run --name web1 -p 8090:80 -d nginx:alpine
+0822811f150ab0b5ca65eeeb0ab4c3b7c53c91a37522c56ae47e89126b1cf827
+
+$ docker inspect web1 | head -n 40
+[
+    {
+        "Id": "0822811f150ab0b5ca65eeeb0ab4c3b7c53c91a37522c56ae47e89126b1cf827",
+        "Created": "2026-10-05T08:54:50.731419398Z",
+        "Path": "/docker-entrypoint.sh",
+        "Args": [
+            "nginx",
+            "-g",
+            "daemon off;"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 6063,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-05T08:54:51.645602551Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:df221db836e1754089190208cee7eeda94f233197056426eda74a43ab1abeac2",
+        "ResolvConfPath": "/var/lib/docker/containers/0822811f150ab0b5ca65eeeb0ab4c3b7c53c91a37522c56ae47e89126b1cf827/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/0822811f150ab0b5ca65eeeb0ab4c3b7c53c91a37522c56ae47e89126b1cf827/hostname",
+        "HostsPath": "/var/lib/docker/containers/0822811f150ab0b5ca65eeeb0ab4c3b7c53c91a37522c56ae47e89126b1cf827/hosts",
+        "LogPath": "/var/lib/docker/containers/0822811f150ab0b5ca65eeeb0ab4c3b7c53c91a37522c56ae47e89126b1cf827/0822811f150ab0b5ca65eeeb0ab4c3b7c53c91a37522c56ae47e89126b1cf827-json.log",
+        "Name": "/web1",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": null,
+            "ContainerIDFile": "",
+            "LogConfig": {
+
+$ docker inspect -f '{{.NetworkSettings.IPAddress}}' web1
+
+template parsing error: template: :1:18: executing "" at <.NetworkSettings.IPAddress>: map has no entry for key "IPAddress"
+
+$ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' web1
+172.17.0.2
+
+$ docker top web1
+UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
+root                6063                6040                6                   08:54               ?                   00:00:00            nginx: master process nginx -g daemon off;
+statd               6130                6063                0                   08:54               ?                   00:00:00            nginx: worker process
+statd               6131                6063                0                   08:54               ?                   00:00:00            nginx: worker process
+statd               6132                6063                0                   08:54               ?                   00:00:00            nginx: worker process
+statd               6133                6063                0                   08:54               ?                   00:00:00            nginx: worker process
+statd               6134                6063                0                   08:54               ?                   00:00:00            nginx: worker process
+statd               6135                6063                0                   08:54               ?                   00:00:00            nginx: worker process
+statd               6136                6063                0                   08:54               ?                   00:00:00            nginx: worker process
+statd               6137                6063                0                   08:54               ?                   00:00:00            nginx: worker process
+
+$ docker stats --no-stream web1
+CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT    MEM %     NET I/O       BLOCK I/O     PIDS
+0822811f150a   web1      0.00%     7.414MiB / 7.68GiB   0.09%     872B / 126B   0B / 8.19kB   9
+
+$ docker exec web1 sh -c 'uname -a; ps aux; ls -la /usr/share/nginx/html'
+Linux 0822811f150a 6.6.87.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025 x86_64 Linux
+PID   USER     TIME  COMMAND
+    1 root      0:00 nginx: master process nginx -g daemon off;
+   30 nginx     0:00 nginx: worker process
+   31 nginx     0:00 nginx: worker process
+   32 nginx     0:00 nginx: worker process
+   33 nginx     0:00 nginx: worker process
+   34 nginx     0:00 nginx: worker process
+   35 nginx     0:00 nginx: worker process
+   36 nginx     0:00 nginx: worker process
+   37 nginx     0:00 nginx: worker process
+   38 root      0:01 sh -c uname -a; ps aux; ls -la /usr/share/nginx/html
+   45 root      0:01 ps aux
+total 16
+drwxr-xr-x    2 root     root          4096 Sep 22 21:19 .
+drwxr-xr-x    3 root     root          4096 Sep 22 21:19 ..
+-rw-r--r--    1 root     root           497 Sep 15 14:18 50x.html
+-rw-r--r--    1 root     root           896 Sep 15 14:18 index.html
+
+$ docker cp web1:/etc/nginx/nginx.conf ./nginx.conf
+
+$ head -n 15 nginx.conf
+
+user  nginx;
+worker_processes  auto;
+
+error_log  /var/log/nginx/error.log notice;
+pid        /run/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       /etc/nginx/mime.types;
+

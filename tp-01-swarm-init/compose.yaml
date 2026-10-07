@@ -1,0 +1,40 @@
+name: tp1-swarm
+
+# Infrastructure du TP : 3 "machines" Docker-in-Docker pour le Swarm.
+# Le Swarm lui-même (init/join, service web) se fait ensuite avec la CLI, cf. README.
+#   docker compose up -d --wait
+services:
+  manager:
+    <<: &node
+      image: docker:dind
+      privileged: true                 # requis pour faire tourner dockerd dans un conteneur
+      environment:
+        DOCKER_TLS_CERTDIR: ""         # pas de TLS : aucun port publié, daemon joignable seulement sur swarm-net
+      healthcheck:                     # --wait attend que le dockerd interne réponde (~10 s)
+        test: ["CMD", "docker", "info"]
+        interval: 2s
+        retries: 30
+    hostname: manager
+    networks:
+      swarm-net:
+        ipv4_address: 172.30.0.10
+
+  worker1:
+    <<: *node
+    hostname: worker1
+    networks:
+      swarm-net:
+        ipv4_address: 172.30.0.11
+
+  worker2:
+    <<: *node
+    hostname: worker2
+    networks:
+      swarm-net:
+        ipv4_address: 172.30.0.12
+
+networks:
+  swarm-net:
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24

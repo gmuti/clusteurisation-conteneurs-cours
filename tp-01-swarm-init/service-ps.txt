@@ -1,0 +1,18 @@
+# Historique complet des tâches du service web (après la panne de worker1)
+
+$ docker compose exec manager docker service ps web
+ID             NAME        IMAGE          NODE      DESIRED STATE   CURRENT STATE                ERROR     PORTS
+q3a22nttidfe   web.1       nginx:latest   manager   Running         Running 21 seconds ago                 
+nvcdqreeylvx    \_ web.1   nginx:latest   worker1   Shutdown        Running about a minute ago             
+k26khurg5rua   web.2       nginx:latest   worker2   Running         Running about a minute ago             
+tmbd5w1saw5l   web.3       nginx:latest   manager   Running         Running about a minute ago             
+msmzm1hrbbho   web.4       nginx:latest   worker2   Running         Running 21 seconds ago                 
+driebqxt7fv4    \_ web.4   nginx:latest   worker1   Shutdown        Running about a minute ago             
+
+$ docker compose exec manager docker service ps web --filter desired-state=running
+ID             NAME      IMAGE          NODE      DESIRED STATE   CURRENT STATE                ERROR     PORTS
+q3a22nttidfe   web.1     nginx:latest   manager   Running         Running 23 seconds ago                 
+k26khurg5rua   web.2     nginx:latest   worker2   Running         Running about a minute ago             
+tmbd5w1saw5l   web.3     nginx:latest   manager   Running         Running about a minute ago             
+msmzm1hrbbho   web.4     nginx:latest   worker2   Running         Running 23 seconds ago                 
+

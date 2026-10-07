@@ -1,0 +1,68 @@
+$ docker login </dev/null
+Authenticating with existing credentials... [Username: gedeonm]
+
+ Info -> To login with a different account, run 'docker logout' followed by 'docker login'
+
+
+Login Succeeded
+
+$ docker tag monsite:1.0 gedeonm/monsite:1.0
+
+$ docker tag monsite:1.0 gedeonm/monsite:latest
+
+$ docker images | grep monsite
+gedeonm/monsite:1.0                                       b727ad4e98c3       93.6MB         26.3MB        
+gedeonm/monsite:latest                                    b727ad4e98c3       93.6MB         26.3MB        
+monsite:1.0                                               b727ad4e98c3       93.6MB         26.3MB        
+
+$ docker push gedeonm/monsite:1.0
+The push refers to repository [docker.io/gedeonm/monsite]
+d9aae54b5831: Mounted from library/nginx
+e2de96513ba9: Mounted from library/nginx
+6c53d0b2a666: Mounted from library/nginx
+745dfb2690dd: Mounted from library/nginx
+44136fa355b3: Pushed
+9a9a644fdd6a: Mounted from library/nginx
+64c8194480fe: Mounted from library/nginx
+1b9d16ab31d2: Pushed
+e76228b47809: Mounted from library/nginx
+e72112c14215: Mounted from library/nginx
+62830cca3cbd: Pushed
+1.0: digest: sha256:b727ad4e98c39fa69d53ec54d2ca4a7de6ed93f41f07ef976dca43df2590369d size: 856
+
+$ docker push gedeonm/monsite:latest
+The push refers to repository [docker.io/gedeonm/monsite]
+44136fa355b3: Already exists
+1b9d16ab31d2: Already exists
+e2de96513ba9: Layer already exists
+d9aae54b5831: Layer already exists
+6c53d0b2a666: Layer already exists
+745dfb2690dd: Layer already exists
+9a9a644fdd6a: Layer already exists
+64c8194480fe: Layer already exists
+e76228b47809: Layer already exists
+e72112c14215: Layer already exists
+62830cca3cbd: Layer already exists
+latest: digest: sha256:b727ad4e98c39fa69d53ec54d2ca4a7de6ed93f41f07ef976dca43df2590369d size: 856
+
+$ docker rmi gedeonm/monsite:1.0
+Untagged: gedeonm/monsite:1.0
+
+$ docker pull gedeonm/monsite:1.0
+1.0: Pulling from gedeonm/monsite
+Digest: sha256:b727ad4e98c39fa69d53ec54d2ca4a7de6ed93f41f07ef976dca43df2590369d
+Status: Downloaded newer image for gedeonm/monsite:1.0
+docker.io/gedeonm/monsite:1.0
+
+$ docker rm -f monsite2
+
+$ docker run --name monsite2 -p 8082:80 -d gedeonm/monsite:1.0
+3d1e5caa90f14c2d874581600601ae9cfbfe5d493e4cdef18f9e5dcf3e9e54c9
+
+$ curl -s http://localhost:8082 | grep h1
+    <h1>Hello depuis mon image Docker</h1>
+
+$ docker ps --filter name=monsite2
+CONTAINER ID   IMAGE                 COMMAND                  CREATED         STATUS         PORTS                                     NAMES
+3d1e5caa90f1   gedeonm/monsite:1.0   "/docker-entrypoint.…"   5 seconds ago   Up 4 seconds   0.0.0.0:8082->80/tcp, [::]:8082->80/tcp   monsite2
+

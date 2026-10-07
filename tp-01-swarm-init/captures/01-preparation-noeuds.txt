@@ -1,0 +1,42 @@
+$ docker compose up -d --wait
+ Network tp1-swarm_swarm-net Creating 
+ Network tp1-swarm_swarm-net Creating 
+ Network tp1-swarm_swarm-net Created 
+ Network tp1-swarm_swarm-net Created 
+ Container tp1-swarm-worker2-1 Creating 
+ Container tp1-swarm-worker1-1 Creating 
+ Container tp1-swarm-manager-1 Creating 
+ Container tp1-swarm-worker1-1 Created 
+ Container tp1-swarm-manager-1 Created 
+ Container tp1-swarm-worker2-1 Created 
+ Container tp1-swarm-worker1-1 Starting 
+ Container tp1-swarm-worker2-1 Starting 
+ Container tp1-swarm-manager-1 Starting 
+ Container tp1-swarm-worker1-1 Started 
+ Container tp1-swarm-worker2-1 Started 
+ Container tp1-swarm-manager-1 Started 
+ Container tp1-swarm-manager-1 Waiting 
+ Container tp1-swarm-worker1-1 Waiting 
+ Container tp1-swarm-worker2-1 Waiting 
+ Container tp1-swarm-worker1-1 Healthy 
+ Container tp1-swarm-manager-1 Healthy 
+ Container tp1-swarm-worker2-1 Healthy 
+
+$ docker compose ps --format 'table {{.Name}}\t{{.Service}}\t{{.Status}}'
+NAME                  SERVICE   STATUS
+tp1-swarm-manager-1   manager   Up 18 seconds (healthy)
+tp1-swarm-worker1-1   worker1   Up 20 seconds (healthy)
+tp1-swarm-worker2-1   worker2   Up 19 seconds (healthy)
+
+$ docker compose exec manager sh -c 'echo $(hostname) - $(hostname -i) - $(. /etc/os-release; echo $PRETTY_NAME) - Docker Engine $(docker version -f {{.Server.Version}})'
+manager - 172.30.0.10 - Alpine Linux v3.24 - Docker Engine 29.8.2
+
+$ docker compose exec worker1 sh -c 'echo $(hostname) - $(hostname -i) - $(. /etc/os-release; echo $PRETTY_NAME) - Docker Engine $(docker version -f {{.Server.Version}})'
+worker1 - 172.30.0.11 - Alpine Linux v3.24 - Docker Engine 29.8.2
+
+$ docker compose exec worker2 sh -c 'echo $(hostname) - $(hostname -i) - $(. /etc/os-release; echo $PRETTY_NAME) - Docker Engine $(docker version -f {{.Server.Version}})'
+worker2 - 172.30.0.12 - Alpine Linux v3.24 - Docker Engine 29.8.2
+
+$ docker version -f 'Hôte : Docker Engine {{.Server.Version}} ({{.Server.Os}}/{{.Server.Arch}}, Docker Desktop WSL2)'
+Hôte : Docker Engine 29.8.1 (linux/amd64, Docker Desktop WSL2)
+

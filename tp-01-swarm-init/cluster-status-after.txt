@@ -1,0 +1,37 @@
+# État du cluster APRÈS l'arrêt de worker1 (docker compose stop worker1 à 12:42:14) - 05/10/2026 12:42:52
+
+$ docker compose exec manager docker node ls
+ID                            HOSTNAME   STATUS    AVAILABILITY   MANAGER STATUS   ENGINE VERSION
+1yi758r2mlwn8rwaisszwknge *   manager    Ready     Active         Leader           29.8.2
+3ej1bbztdav4bukjn0vfel5en     worker1    Down      Active                          29.8.2
+grez361ynw8dv0yu5z9cbgfh6     worker2    Ready     Active                          29.8.2
+
+$ docker compose exec manager docker service ls
+ID             NAME      MODE         REPLICAS   IMAGE          PORTS
+kcflufl9j4h5   web       replicated   6/4        nginx:latest   
+
+$ docker compose exec manager docker service ps web
+ID             NAME        IMAGE          NODE      DESIRED STATE   CURRENT STATE                ERROR     PORTS
+q3a22nttidfe   web.1       nginx:latest   manager   Running         Running 12 seconds ago                 
+nvcdqreeylvx    \_ web.1   nginx:latest   worker1   Shutdown        Running about a minute ago             
+k26khurg5rua   web.2       nginx:latest   worker2   Running         Running about a minute ago             
+tmbd5w1saw5l   web.3       nginx:latest   manager   Running         Running about a minute ago             
+msmzm1hrbbho   web.4       nginx:latest   worker2   Running         Running 12 seconds ago                 
+driebqxt7fv4    \_ web.4   nginx:latest   worker1   Shutdown        Running about a minute ago             
+
+$ docker compose exec manager docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}'
+NAMES                             IMAGE          STATUS
+web.1.q3a22nttidfewt70pc50kvj7d   nginx:latest   Up 17 seconds
+web.3.tmbd5w1saw5l3xphikv5p8d5s   nginx:latest   Up About a minute
+
+$ docker compose exec worker2 docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}'
+NAMES                             IMAGE          STATUS
+web.4.msmzm1hrbbhogo45ar9xdpsp4   nginx:latest   Up 19 seconds
+web.2.k26khurg5ruanffjc9s4ziu80   nginx:latest   Up About a minute
+
+$ docker compose ps -a --format 'table {{.Service}}\t{{.Status}}'
+SERVICE   STATUS
+manager   Up 2 minutes (healthy)
+worker1   Exited (0) 36 seconds ago
+worker2   Up 2 minutes (healthy)
+

@@ -1,0 +1,43 @@
+$ docker build -t monsite:1.0 .
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 104B 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/nginx:alpine
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 59B 0.0s done
+#3 DONE 0.1s
+
+#4 [internal] load build context
+#4 transferring context: 246B 0.0s done
+#4 DONE 0.2s
+
+#5 [1/2] FROM docker.io/library/nginx:alpine@sha256:df221db836e1754089190208cee7eeda94f233197056426eda74a43ab1abeac2
+#5 resolve docker.io/library/nginx:alpine@sha256:df221db836e1754089190208cee7eeda94f233197056426eda74a43ab1abeac2 0.2s done
+#5 DONE 0.8s
+
+#6 [2/2] COPY index.html /usr/share/nginx/html/index.html
+#6 DONE 0.2s
+
+#7 exporting to image
+#7 exporting layers
+#7 exporting layers 0.6s done
+#7 exporting manifest sha256:a9e7e378711fa262e221ba0d10ba080e694c9943f4c3354339e863ce8e0a94a7 0.0s done
+#7 exporting config sha256:7e02a302d8e53b08164da42778c0210a2391cf5e92a45264b8d406599e2039bd
+#7 exporting config sha256:7e02a302d8e53b08164da42778c0210a2391cf5e92a45264b8d406599e2039bd 0.4s done
+#7 exporting attestation manifest sha256:b31f31a39c46c682d4881d8bf053769ce66a47a8c47ab8a798a2ec5175710342
+#7 exporting attestation manifest sha256:b31f31a39c46c682d4881d8bf053769ce66a47a8c47ab8a798a2ec5175710342 0.2s done
+#7 exporting manifest list sha256:b727ad4e98c39fa69d53ec54d2ca4a7de6ed93f41f07ef976dca43df2590369d
+#7 exporting manifest list sha256:b727ad4e98c39fa69d53ec54d2ca4a7de6ed93f41f07ef976dca43df2590369d 0.1s done
+#7 naming to docker.io/library/monsite:1.0
+#7 naming to docker.io/library/monsite:1.0 0.0s done
+#7 unpacking to docker.io/library/monsite:1.0 0.1s done
+#7 DONE 1.8s
+
+$ docker images | grep monsite
+monsite:1.0                                               b727ad4e98c3       93.6MB         26.3MB        
+

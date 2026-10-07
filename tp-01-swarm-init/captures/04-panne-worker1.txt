@@ -1,0 +1,29 @@
+$ docker compose stop worker1      # 12:42:14 - simulation de la panne
+ Container tp1-swarm-worker1-1 Stopping 
+ Container tp1-swarm-worker1-1 Stopped 
+
+t+17.2s  worker1=Ready  tâches Running hors worker1=2/4
+t+20.1s  worker1=Ready  tâches Running hors worker1=2/4
+t+23.5s  worker1=Ready  tâches Running hors worker1=2/4
+t+26.4s  worker1=Down  tâches Running hors worker1=2/4
+t+29.6s  worker1=Down  tâches Running hors worker1=4/4
+
+=> 4/4 réplicas Running sur les nœuds restants après ~29.6 s
+# Horodatages précis (le 'docker compose stop' a duré ~15 s : arrêt propre du dockerd interne, code de sortie 0)
+$ docker inspect tp1-swarm-worker1-1 --format 'worker1 arrêté (FinishedAt)  : {{.State.FinishedAt}}  ExitCode={{.State.ExitCode}}'
+worker1 arrêté (FinishedAt)  : 2026-10-05T10:42:30.445658477Z  ExitCode=0
+
+$ docker compose exec manager docker inspect q3a22nttidfe --format 'tâche {{.Slot}} replanifiée : créée {{.CreatedAt}} - Running {{.Status.Timestamp}}'
+tâche 1 replanifiée : créée 2026-10-05 10:42:39.77434293 +0000 UTC - Running 2026-10-05 10:42:47.570134856 +0000 UTC
+
+$ docker compose exec manager docker inspect msmzm1hrbbho --format 'tâche {{.Slot}} replanifiée : créée {{.CreatedAt}} - Running {{.Status.Timestamp}}'
+tâche 4 replanifiée : créée 2026-10-05 10:42:39.774219321 +0000 UTC - Running 2026-10-05 10:42:48.051505097 +0000 UTC
+
+$ docker compose exec manager docker inspect worker1 --format 'worker1 vu Down par le manager : {{.UpdatedAt}} ({{.Status.State}})'
+worker1 vu Down par le manager : 2026-10-05 10:42:39.770539542 +0000 UTC (down)
+
+# Chronologie (UTC)
+#   10:42:14.0  docker compose stop worker1 (début de l'arrêt propre)
+#   10:42:30.4  worker1 effectivement arrêté                           t = 0
+#   10:42:39.8  manager : worker1 Down + 2 nouvelles tâches créées    t + 9.3 s  (détection)
+#   10:42:48.1  les 2 tâches replanifiées sont Running                 t + 17.6 s (=> 4/4)

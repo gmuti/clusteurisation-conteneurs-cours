@@ -1,0 +1,148 @@
+$ mkdir -p mysql-data
+
+$ docker run --name mysql1 -d -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=tp -p 3306:3306 -v "C:/Users/gedeo.mutikanga/OneDrive - CONSERTO/Bureau/ESGI/docker-cours/tp-docker-image/mysql-data:/var/lib/mysql" mysql:8
+Unable to find image 'mysql:8' locally
+8: Pulling from library/mysql
+9056f6ecb394: Pulling fs layer
+1c8d0b814939: Pulling fs layer
+0da02031b810: Pulling fs layer
+3a129719b3ee: Pulling fs layer
+e49eff447cf4: Pulling fs layer
+442cf3908783: Pulling fs layer
+b23c4a59849a: Pulling fs layer
+ea066d40f8be: Pulling fs layer
+ff557ec8ac73: Pulling fs layer
+1be21a6c94a6: Pulling fs layer
+ead2e45f6d29: Download complete
+9056f6ecb394: Download complete
+442cf3908783: Download complete
+3a129719b3ee: Download complete
+4347f9bd42d8: Download complete
+e49eff447cf4: Download complete
+0da02031b810: Download complete
+1be21a6c94a6: Download complete
+1c8d0b814939: Download complete
+b23c4a59849a: Download complete
+ff557ec8ac73: Download complete
+ea066d40f8be: Download complete
+0da02031b810: Pull complete
+e49eff447cf4: Pull complete
+b23c4a59849a: Pull complete
+442cf3908783: Pull complete
+9056f6ecb394: Pull complete
+ff557ec8ac73: Pull complete
+3a129719b3ee: Pull complete
+1c8d0b814939: Pull complete
+1be21a6c94a6: Pull complete
+ea066d40f8be: Pull complete
+Digest: sha256:6ea90827b1100f8f2ae306a539f86d2c264a26ed435a2a9f75551dd5c3aeb242
+Status: Downloaded newer image for mysql:8
+487d2cff65008d576ba6529b601b5afaf80fec43bee79080fddd6aba5bdac389
+
+$ docker logs mysql1 2>&1 | tail -n 5
+2026-10-05T08:53:49.075508Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2026-10-05T08:53:49.076270Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2026-10-05T08:53:49.109931Z 0 [Warning] [MY-011810] [Server] Insecure configuration for --pid-file: Location '/var/run/mysqld' in the path is accessible to all OS users. Consider choosing a different directory.
+2026-10-05T08:53:49.205923Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060, socket: /var/run/mysqld/mysqlx.sock
+2026-10-05T08:53:49.206166Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections. Version: '8.4.11'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server - GPL.
+
+$ ls -la mysql-data
+total 108524
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096  4194304 Oct  5 10:53 #ib_16384_0.dblwr
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096 12582912 Oct  5 10:52 #ib_16384_1.dblwr
+drwxr-xr-x 1 CONSERTO+gedeo.mutikanga 4096        0 Oct  5 10:53 #innodb_redo
+drwxr-xr-x 1 CONSERTO+gedeo.mutikanga 4096        0 Oct  5 10:53 #innodb_temp
+drwxr-xr-x 1 CONSERTO+gedeo.mutikanga 4096        0 Oct  5 10:53 .
+drwxr-xr-x 1 CONSERTO+gedeo.mutikanga 4096        0 Oct  5 10:49 ..
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096       56 Oct  5 10:52 auto.cnf
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096  2996504 Oct  5 10:53 binlog.000001
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096      158 Oct  5 10:53 binlog.000002
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096       32 Oct  5 10:53 binlog.index
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096     1705 Oct  5 10:53 ca-key.pem
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096     1112 Oct  5 10:53 ca.pem
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096     1112 Oct  5 10:53 client-cert.pem
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096     1705 Oct  5 10:53 client-key.pem
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096     5701 Oct  5 10:53 ib_buffer_pool
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096 12582912 Oct  5 10:53 ibdata1
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096 12582912 Oct  5 10:53 ibtmp1
+drwxr-xr-x 1 CONSERTO+gedeo.mutikanga 4096        0 Oct  5 10:53 mysql
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096 32505856 Oct  5 10:53 mysql.ibd
+lrwxrwxrwx 1 CONSERTO+gedeo.mutikanga 4096       27 Oct  5 10:53 mysql.sock -> /var/run/mysqld/mysqld.sock
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096      125 Oct  5 10:53 mysql_upgrade_history
+drwxr-xr-x 1 CONSERTO+gedeo.mutikanga 4096        0 Oct  5 10:53 performance_schema
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096     1705 Oct  5 10:53 private_key.pem
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096      452 Oct  5 10:53 public_key.pem
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096     1112 Oct  5 10:53 server-cert.pem
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096     1705 Oct  5 10:53 server-key.pem
+drwxr-xr-x 1 CONSERTO+gedeo.mutikanga 4096        0 Oct  5 10:53 sys
+drwxr-xr-x 1 CONSERTO+gedeo.mutikanga 4096        0 Oct  5 10:53 tp
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096 16777216 Oct  5 10:53 undo_001
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096 16777216 Oct  5 10:53 undo_002
+
+$ docker exec mysql1 mysql -uroot -proot tp -e "CREATE TABLE IF NOT EXISTS t(id INT); INSERT INTO t VALUES (42);"
+mysql: [Warning] Using a password on the command line interface can be insecure.
+
+$ docker rm -f mysql1
+mysql1
+
+$ docker run --name mysql1 -d -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=tp -p 3306:3306 -v "C:/Users/gedeo.mutikanga/OneDrive - CONSERTO/Bureau/ESGI/docker-cours/tp-docker-image/mysql-data:/var/lib/mysql" mysql:8
+3f7063bf45df2fdce13dedc6b28913f1677109b8b0c2293e00f451471061eee3
+
+$ ls -la mysql-data
+total 108528
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096  4194304 Oct  5 10:54 #ib_16384_0.dblwr
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096 12582912 Oct  5 10:52 #ib_16384_1.dblwr
+drwxr-xr-x 1 CONSERTO+gedeo.mutikanga 4096        0 Oct  5 10:54 #innodb_redo
+drwxr-xr-x 1 CONSERTO+gedeo.mutikanga 4096        0 Oct  5 10:54 #innodb_temp
+drwxr-xr-x 1 CONSERTO+gedeo.mutikanga 4096        0 Oct  5 10:54 .
+drwxr-xr-x 1 CONSERTO+gedeo.mutikanga 4096        0 Oct  5 10:49 ..
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096       56 Oct  5 10:52 auto.cnf
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096  2996504 Oct  5 10:53 binlog.000001
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096      623 Oct  5 10:54 binlog.000002
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096      158 Oct  5 10:54 binlog.000003
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096       48 Oct  5 10:54 binlog.index
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096     1705 Oct  5 10:53 ca-key.pem
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096     1112 Oct  5 10:53 ca.pem
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096     1112 Oct  5 10:53 client-cert.pem
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096     1705 Oct  5 10:53 client-key.pem
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096     5701 Oct  5 10:53 ib_buffer_pool
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096 12582912 Oct  5 10:54 ibdata1
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096 12582912 Oct  5 10:54 ibtmp1
+drwxr-xr-x 1 CONSERTO+gedeo.mutikanga 4096        0 Oct  5 10:53 mysql
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096 32505856 Oct  5 10:54 mysql.ibd
+lrwxrwxrwx 1 CONSERTO+gedeo.mutikanga 4096       27 Oct  5 10:53 mysql.sock -> /var/run/mysqld/mysqld.sock
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096      125 Oct  5 10:53 mysql_upgrade_history
+drwxr-xr-x 1 CONSERTO+gedeo.mutikanga 4096        0 Oct  5 10:53 performance_schema
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096     1705 Oct  5 10:53 private_key.pem
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096      452 Oct  5 10:53 public_key.pem
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096     1112 Oct  5 10:53 server-cert.pem
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096     1705 Oct  5 10:53 server-key.pem
+drwxr-xr-x 1 CONSERTO+gedeo.mutikanga 4096        0 Oct  5 10:53 sys
+drwxr-xr-x 1 CONSERTO+gedeo.mutikanga 4096        0 Oct  5 10:53 tp
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096 16777216 Oct  5 10:54 undo_001
+-rw-r--r-- 1 CONSERTO+gedeo.mutikanga 4096 16777216 Oct  5 10:54 undo_002
+
+$ docker exec mysql1 mysql -uroot -proot tp -e "SELECT * FROM t;"
+mysql: [Warning] Using a password on the command line interface can be insecure.
+id
+42
+
+$ docker volume create mysql_data
+mysql_data
+
+$ docker run --name mysql2 -d -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=tp -p 3307:3306 -v mysql_data:/var/lib/mysql mysql:8
+b94f32c8311e8a8545f8443312c044a5ba2f5379e5fad43ba06079c9c6878f4f
+
+$ docker volume inspect mysql_data
+[
+    {
+        "CreatedAt": "2026-10-05T08:54:19Z",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/mysql_data/_data",
+        "Name": "mysql_data",
+        "Options": null,
+        "Scope": "local"
+    }
+]
+
