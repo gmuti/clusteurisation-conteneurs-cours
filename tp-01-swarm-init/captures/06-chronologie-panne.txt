@@ -1,0 +1,18 @@
+# Horodatages précis de la panne de worker1 (07/10/2026), lus avec docker inspect
+
+$ docker inspect tp1-swarm-worker1-1 --format 'worker1 FinishedAt={{.State.FinishedAt}} Exit={{.State.ExitCode}}'
+worker1 FinishedAt=2026-10-07T06:42:39.924834886Z Exit=0
+
+$ docker compose exec manager docker inspect worker1 --format 'node {{.UpdatedAt}} {{.Status.State}}'
+node 2026-10-07 06:42:49.85997834 +0000 UTC down
+
+$ docker compose exec manager docker inspect cwzy0jp4cg8p --format 'slot {{.Slot}} created {{.CreatedAt}} running {{.Status.Timestamp}}'
+slot 3 created 2026-10-07 06:42:49.866196323 +0000 UTC running 2026-10-07 06:42:55.657158483 +0000 UTC
+
+$ docker compose exec manager docker inspect 187b0m0cgqqu --format 'slot {{.Slot}} created {{.CreatedAt}} running {{.Status.Timestamp}}'
+slot 4 created 2026-10-07 06:42:49.865955739 +0000 UTC running 2026-10-07 06:42:55.662443971 +0000 UTC
+
+# Chronologie (UTC ; heure locale = UTC+2)
+#   06:42:39.9  worker1 effectivement arrêté                                t = 0
+#   06:42:49.9  manager : worker1 Down + 2 tâches de remplacement créées   t + 9,9 s  (détection)
+#   06:42:55.7  les 2 tâches replanifiées sont Running                      t + 15,7 s (=> 4/4)

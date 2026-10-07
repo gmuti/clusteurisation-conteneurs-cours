@@ -22,4 +22,4 @@ Chaque TP a son propre dossier ici (`tp-docker-image/`, `tp-01-swarm-init/`, …
 ## Avancement
 
 - `tp-docker-image/` (Prise en main de Docker) : terminé le 05/10/2026, image publiée en `gedeonm/monsite:1.0` et `:latest`. Ses conteneurs (`web1`, `mysql1`, `mysql2`, `monsite2`) sont arrêtés, pas supprimés.
-- `tp-01-swarm-init/` (Swarm 3 nœuds + résilience) : terminé le 05/10/2026. Cluster défini dans `compose.yaml` (projet `tp1-swarm`, nœuds DinD sur 172.30.0.0/24), laissé en marche avec le service `web`. Les images de `screenshots/` sont générées depuis `captures/` par `screenshots/render.py` (Pillow, venv dans le scratchpad, pas installé globalement).
+- `tp-01-swarm-init/` (Swarm 3 nœuds + résilience) : refait le 07/10/2026 par l'utilisateur dans son PowerShell. Cluster défini dans `compose.yaml` (projet `tp1-swarm`, nœuds DinD sur 172.30.0.0/24), laissé en marche avec le service `web`. Les captures sont de vraies captures d'écran PNG dans `captures/` (l'ancien rendu `screenshots/render.py` du 05/10 a été supprimé).

@@ -1,32 +1,19 @@
-# État du cluster AVANT la panne - 05/10/2026 12:41:53
+# État du cluster AVANT la panne - 07/10/2026
+# (sorties relevées dans captures/03-swarm-join.png, 04-service-create.png et 05-repartition-avant.png)
 
 $ docker compose exec manager docker node ls
 ID                            HOSTNAME   STATUS    AVAILABILITY   MANAGER STATUS   ENGINE VERSION
-1yi758r2mlwn8rwaisszwknge *   manager    Ready     Active         Leader           29.8.2
-3ej1bbztdav4bukjn0vfel5en     worker1    Ready     Active                          29.8.2
-grez361ynw8dv0yu5z9cbgfh6     worker2    Ready     Active                          29.8.2
+don4d8vs1fnwpykrr64q8un9w *   manager    Ready     Active         Leader           29.8.2
+kzsvb6ry5pkj8lro1r8hn78vj     worker1    Ready     Active                          29.8.2
+u0haz0z6974gz39xdp60c6yhy     worker2    Ready     Active                          29.8.2
 
 $ docker compose exec manager docker service ls
 ID             NAME      MODE         REPLICAS   IMAGE          PORTS
-kcflufl9j4h5   web       replicated   4/4        nginx:latest   
+ne63uso07om9   web       replicated   4/4        nginx:latest
 
 $ docker compose exec manager docker service ps web
 ID             NAME      IMAGE          NODE      DESIRED STATE   CURRENT STATE            ERROR     PORTS
-nvcdqreeylvx   web.1     nginx:latest   worker1   Running         Running 9 seconds ago              
-k26khurg5rua   web.2     nginx:latest   worker2   Running         Running 9 seconds ago              
-tmbd5w1saw5l   web.3     nginx:latest   manager   Running         Running 12 seconds ago             
-driebqxt7fv4   web.4     nginx:latest   worker1   Running         Running 9 seconds ago              
-
-$ docker compose exec manager docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}'
-NAMES                             IMAGE          STATUS
-web.3.tmbd5w1saw5l3xphikv5p8d5s   nginx:latest   Up 13 seconds
-
-$ docker compose exec worker1 docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}'
-NAMES                             IMAGE          STATUS
-web.4.driebqxt7fv4pwtmr0e14sa4r   nginx:latest   Up 12 seconds
-web.1.nvcdqreeylvx3lefahvpvvi09   nginx:latest   Up 12 seconds
-
-$ docker compose exec worker2 docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}'
-NAMES                             IMAGE          STATUS
-web.2.k26khurg5ruanffjc9s4ziu80   nginx:latest   Up 13 seconds
-
+6vwm7dommo9j   web.1     nginx:latest   worker2   Running         Running 58 seconds ago
+m8apqy2jsogq   web.2     nginx:latest   manager   Running         Running 58 seconds ago
+yy0t0ohiq46k   web.3     nginx:latest   worker1   Running         Running 58 seconds ago
+9d4g3chsaliu   web.4     nginx:latest   worker1   Running         Running 58 seconds ago
